@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shadow Syndicate</title>
+  <style>
+   @import url('https://fonts.googleapis.com/css2?family=Razor&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Lambert&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Lambert', sans-serif;
+      background-image: url('https://img.playstationtrophies.org/images/monthly_2025_05/screenshots/33584/theshadowsyndicate-screen3_0f8b8ad0-4a42-401a-9a04-f9d9a4a279c5.jpg');
+      background-size: cover;
+      background-position: center;
+      color: white;
+    }
+
+    h1 {
+      font-family: 'Razor', cursive;
+      text-align: center;
+      font-size: 60px;
+      margin-top: 30px;
+    }
+
+    .transparent-box {
+      background-color: rgba(0, 0, 0, 0.5);
+      margin: 40px auto;
+      padding: 20px;
+      width: 80%;
+      border-radius: 10px;
+      font-size: 18px;
+    }
+
+    .button {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background-color: #444;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .popup, .popup2, .popup3 {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-image: url('https://c4.wallpaperflare.com/wallpaper/519/268/999/people-shadows-assassin-s-creed-assasins-wallpaper-preview.jpg');
+      background-size: cover;
+      background-position: center;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .popup-content, .popup3-content {
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 30px;
+      border-radius: 10px;
+      width: 80%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .popup3 {
+      background-image: url('https://thumbs.dreamstime.com/b/modern-conference-room-blue-lighting-round-table-design-featuring-large-sleek-empty-space-designed-374437778.jpg');
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+    }
+
+    input[type="text"], textarea, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    .small-popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-image: url('https://www.writing.com/main/images/action/display/ver/1632678819/item_id/2104173.jpg');
+      background-size: cover;
+      width: 400px;
+      height: 300px;
+      text-align: center;
+      color: black;
+      padding-top: 200px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Shadow Syndicate</h1>
+
+  <div class="transparent-box">
+    hospital, school, college, Kacha Bazar, shopping mall, mosjid, rod-ciment bazar, supper shop, police station, thana, fire service, rescue team, political party and many more can be controlled through some selected groups depending on your given time. But keep in mind, it can be continued only for 2-3 days.
+    <br><br>
+    By pressing the button below you will learn about our detailed pricing.
+  </div>
+
+  <button class="button" onclick="document.querySelector('.popup').style.display='flex'">Continue</button>
+
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <h2>Let's Meeting</h2>
+      <div class="form-group">
+        <label>Which want to control:</label>
+        <input type="text">
+      </div>
+      <div class="form-group">
+        <label>How to control and what’s the plan (shortly describe):</label>
+        <textarea></textarea>
+      </div>
+      <div class="form-group">
+        <label>Location:</label>
+        <input type="text">
+      </div>
+      <div class="form-group">
+        <label>Date:</label>
+        <input type="text">
+      </div>
+      <div class="form-group">
+        <label>Time:</label>
+        <input type="text">
+      </div>
+      <div class="form-group">
+        <label>How long:</label>
+        <select>
+          <option>1 day</option>
+          <option>2 day</option>
+          <option>3 day</option>
+        </select>
+      </div>
+      <button class="button" onclick="document.querySelector('.popup2').style.display='flex'">Meet on Round Table</button>
+    </div>
+  </div>
+
+  <div class="popup2 popup3">
+    <div class="popup3-content">
+      <div class="form-group">
+        <label>Give your anonymous name:</label>
+        <input type="text" id="anonName" onchange="showMessageBox()">
+      </div>
+      <div class="form-group" id="messageBox" style="display: none;">
+        <label>Your Message (max 1000 words):</label>
+        <textarea rows="10"></textarea>
+        <button class="button" onclick="document.querySelector('.small-popup').style.display='block'">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="small-popup">
+    <p>Open Inbox</p>
+    <p style="color: white; font-weight: bold;">Come to meeting.<br>Address: <a href="#">[Unknown Secure Link]</a></p>
+  </div>
+
+  <script>
+    function showMessageBox() {
+      document.getElementById('messageBox').style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>

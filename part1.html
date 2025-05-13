@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Dark Viper</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background-image: url('https://images.pexels.com/photos/15466178/pexels-photo-15466178.jpeg?auto=compress&cs=tinysrgb&h=627&fit=crop&w=1200');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .login-box {
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 30px;
+      border-radius: 10px;
+      color: red;
+      text-align: center;
+      box-shadow: 0 0 10px red;
+    }
+    input {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      background: black;
+      color: red;
+      border: 1px solid red;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: red;
+      border: none;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: black;
+      color: red;
+      border: 1px solid red;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h1>The Dark Viper</h1>
+    <input type="email" id="email" placeholder="Email address" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <button onclick="checkLogin()">Continue</button>
+  </div>
+
+  <script>
+    function checkLogin() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      if (email && password === "NAWROSEKHAN01853319495") {
+        window.location.href = "horror.html";
+      } else {
+        alert("Incorrect login. Try again.");
+      }
+    }
+  </script>
+</body>
+</html>

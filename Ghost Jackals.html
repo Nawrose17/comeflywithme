@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ghost Jackals</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap'); /* GTA-like font */
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Russo One', sans-serif;
+      background: url('https://media.istockphoto.com/id/471335489/photo/kidnapping.jpg?s=612x612&w=0&k=20&c=aZOb493cwRup0ILh1ravUe3JGtPhnWIlODpPCSGXyDw=') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+    }
+
+    header {
+      background-color: green;
+      padding: 10px;
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      height: 100px;
+      width: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: black;
+      font-size: 22px;
+      writing-mode: vertical-rl;
+      text-align: center;
+    }
+
+    .rules-box {
+      margin: 150px auto 0;
+      width: 80%;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .continue-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://c4.wallpaperflare.com/wallpaper/931/144/945/abandoned-black-and-white-building-chair-wallpaper-preview.jpg') no-repeat center center fixed;
+      background-size: cover;
+      backdrop-filter: blur(3px);
+      padding: 40px;
+      overflow-y: auto;
+      color: white;
+    }
+
+    .form-box {
+      background-color: rgba(0,0,0,0.7);
+      padding: 20px;
+      border-radius: 15px;
+      max-width: 700px;
+      margin: auto;
+    }
+
+    .form-box label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    .form-box input, .form-box textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    .checkbox {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .confirm-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .confirmation-message {
+      text-align: center;
+      font-size: 24px;
+      margin-top: 30px;
+      color: lime;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    Ghost Jackals
+  </header>
+
+  <div class="rules-box">
+    <h2>Kidnap Rules & Regulations</h2>
+    <p>1. No personal contact during operation.<br>
+       2. Target should be unarmed.<br>
+       3. Escape plan must be ready.<br>
+       4. Leave no trace.<br>
+       5. No media contact after mission.<br>
+    </p>
+    <button class="continue-btn" onclick="showPopup()">Continue</button>
+  </div>
+
+  <div class="popup" id="popup">
+    <div class="form-box">
+      <h2>Target Information</h2>
+      <label>Name:</label><input type="text">
+      <label>Picture (Submit Box):</label><input type="file">
+      <label>Age:</label><input type="number">
+      <label>Home Address:</label><input type="text">
+      <label>Work Address:</label><input type="text">
+      <label>Family Members Info:</label><textarea></textarea>
+      <label>Date of Birth:</label><input type="date">
+      <label>Favourite Color:</label><input type="text">
+      <label>Interest Person's Name:</label><input type="text">
+      <label>Favourite Things:</label><input type="text">
+      <label>Favourite Food:</label><input type="text">
+      <label>Weak Things:</label><input type="text">
+      <label>Attractive Things:</label><input type="text">
+      <div class="checkbox">
+        <input type="checkbox" id="hasCar"><label for="hasCar">&nbsp;Have Car</label>
+      </div>
+      <label>Phone Number:</label><input type="text">
+      <label>Office/Work Domains Name:</label><input type="text">
+      <label>Target Date:</label><input type="date">
+      <label>Target Time:</label><input type="time">
+
+      <h3>User Info</h3>
+      <label>Your Name:</label><input type="text">
+      <label>Your Age:</label><input type="number">
+      <label>Email Address:</label><input type="email">
+
+      <button class="confirm-btn" onclick="showConfirmation()">Confirm</button>
+      <div class="confirmation-message" id="confirmationMessage"></div>
+    </div>
+  </div>
+
+  <script>
+    function showPopup() {
+      document.getElementById("popup").style.display = "block";
+    }
+
+    function showConfirmation() {
+      document.getElementById("confirmationMessage").innerText = "We will meet soon";
+    }
+  </script>
+
+</body>
+</html>

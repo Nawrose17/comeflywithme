@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gang-XHunter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow&family=Creepster&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('https://wallpapercat.com/w/full/8/4/1/665-3840x2160-desktop-4k-red-dead-redemption-wallpaper-photo.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Archivo Narrow', sans-serif;
+      color: red;
+    }
+
+    .title-box {
+      background-color: #333;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+      padding: 10px 20px;
+      margin: 20px;
+      text-align: right;
+      font-size: 24px;
+      color: #fff;
+      font-family: 'Archivo Narrow', sans-serif;
+    }
+
+    .popup {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 30px;
+      width: 60%;
+      margin: 40px auto;
+      border-radius: 10px;
+      color: red;
+      font-family: 'Creepster', cursive;
+    }
+
+    .button {
+      display: block;
+      width: 200px;
+      margin: 30px auto;
+      background-color: red;
+      color: white;
+      padding: 12px;
+      text-align: center;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .target-form-container {
+      display: none;
+      background: url('https://thumbs.dreamstime.com/b/young-street-gang-mask-young-street-gang-mask-park-social-problem-204670358.jpg') no-repeat center center;
+      background-size: cover;
+      padding: 50px;
+      color: red;
+      font-family: 'Creepster', cursive;
+    }
+
+    .target-form {
+      background-color: rgba(0,0,0,0.6);
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .target-form label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+
+    .target-form input, .target-form textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      margin-bottom: 15px;
+    }
+
+    .target-form input[type="checkbox"] {
+      width: auto;
+      display: inline;
+    }
+  </style>
+</head>
+<body>
+  <div class="title-box">Gang-XHunter</div>
+
+  <div class="popup" id="intro">
+    <h2>About the HIT Man</h2>
+    <p>
+      The HIT Man is a highly skilled and precise executor with a clean record of target eliminations.
+      This operation is strictly confidential and follows a code of silence. Only verified targets are accepted.
+    </p>
+    <button class="button" onclick="document.getElementById('form-section').style.display='block'; window.scrollTo(0, document.body.scrollHeight);">Continue</button>
+  </div>
+
+  <div class="target-form-container" id="form-section">
+    <div class="target-form">
+      <h2>Targets Info:</h2>
+      <label>Full Name:</label>
+      <input type="text" />
+
+      <label>Age:</label>
+      <input type="number" />
+
+      <label>Picture:</label>
+      <input type="file" />
+
+      <label>National ID / Driving License No:</label>
+      <input type="text" />
+
+      <label>Phone No:</label>
+      <input type="text" />
+
+      <label>Home Address:</label>
+      <textarea></textarea>
+
+      <label>Work Address:</label>
+      <textarea></textarea>
+
+      <label>Family Members' Names:</label>
+      <textarea></textarea>
+
+      <label>Have Car:</label>
+      <input type="checkbox" /> Yes
+
+      <label>Shotout Time:</label>
+      <input type="time" />
+
+      <label>Shotout Date:</label>
+      <input type="date" />
+
+      <label>Your Email Address:</label>
+      <input type="email" />
+    </div>
+  </div>
+</body>
+</html>

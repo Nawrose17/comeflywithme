@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medicine Corner - Hasna Food</title>
+  <style>
+    body {
+      background-image: url('https://slidechef.net/wp-content/uploads/2022/10/Free-Medicine-Background.jpg');
+      background-size: cover;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: rgba(255,255,255,0.8);
+      padding: 10px 20px;
+    }
+    .cart-btn {
+      background-color: red;
+      color: white;
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .items-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      padding: 20px;
+    }
+    .item-box {
+      background-color: white;
+      width: 300px;
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    .item-box img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .save-btn {
+      margin-top: 10px;
+      background-color: orange;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+    }
+    #cart-modal, #payment-modal {
+      display: none;
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      box-shadow: 0 0 20px black;
+      z-index: 1000;
+    }
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Hasna Food - Medicine Corner</h1>
+    <button class="cart-btn" onclick="showCart()">View Cart</button>
+  </header>
+
+  <div class="items-container" id="itemsContainer"></div>
+
+  <div class="overlay" id="overlay"></div>
+
+  <!-- Cart Modal -->
+  <div id="cart-modal">
+    <h2>Your Cart</h2>
+    <div id="cartItems"></div>
+    <p id="totalPrice"></p>
+    <button onclick="openPayment()">Confirm Order</button>
+    <button onclick="closeCart()">Close</button>
+  </div>
+
+  <!-- Payment Modal -->
+  <div id="payment-modal">
+    <h2>Choose Payment Option</h2>
+    <button onclick="finishOrder('Cash on Delivery')">1. Cash on Delivery</button><br><br>
+    <button onclick="showPaymentNumber('Bkash/Nagad')">2. Bkash/Nagad</button><br><br>
+    <button onclick="showPaymentNumber('Card')">3. Card Payment</button><br><br>
+    <div id="paymentNumber"></div>
+    <br>
+    <button onclick="confirmFinalOrder()">Confirm</button>
+    <button onclick="closePayment()">Cancel</button>
+  </div>
+
+  <script>
+    const items = [
+      { name: 'Eno Lemon', price: 35, weight: '05g', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQshSStqeOGrJA21B27kD0GddLU4HDUcG_WZQ&s' },
+      { name: 'Eno Orange', price: 35, weight: '05g', img: 'https://www.emeds.pk/upload/pro-imges/image-9/eno-orange.webp' },
+      { name: 'Flagyl 400', price: 30, weight: '1 strip', img: 'https://images.apollo247.in/pub/media/catalog/product/F/L/FLA0005_1_1.jpg' },
+      { name: 'Histacin 10mg', price: 40, weight: '1 Strip', img: 'https://medex.com.bd/storage/images/packaging/histacin-10-mg-injection-76682082961-i1-nSVppJc0GrWUORoOzCyx.webp' },
+      { name: 'Napa Extend 665mg', price: 30, weight: '1 strip', img: 'https://i.chaldn.com/_mpimage/napa-extend-tablet-665mg-12-tablets?src=https%3A%2F%2Feggyolk.chaldal.com%2Fapi%2FPicture%2FRaw%3FpictureId%3D106090&q=low&v=1' },
+      { name: 'Napa Extra 65mg', price: 20, weight: '1 strip', img: 'https://cdn2.arogga.com/eyJidWNrZXQiOiJhcm9nZ2EiLCJrZXkiOiJQcm9kdWN0LXBfaW1hZ2VzXC8yNTI3MlwvMjUyNzItTmFwYS1FeHRyYS11dmxyMWYuanBlZyIsImVkaXRzIjpbXX0=' },
+      { name: 'Adovas Syrap', price: 90, weight: '100ml', img: 'https://medeasy.health/_next/image?url=https://api.medeasy.health/media/medicines/adovas-.jpg&w=750&q=75' },
+      { name: 'Tuska Syrup', price: 80, weight: '100ml', img: 'https://medeasy.health/_next/image?url=https://api.medeasy.health/media/medicines/IMG-20231021-WA0131.jpg&w=750&q=75' },
+      { name: 'Nemeol SP', price: 50, weight: '1 strip', img: 'https://tiimg.tistatic.com/fp/2/007/259/nimesulide-paracetamol-serratiopeptidase-body-pain-reliever-tablets-837.jpg' },
+      { name: 'Sarjel 20', price: 60, weight: '1strip', img: 'https://medeasy.health/_next/image?url=https://api.medeasy.health/media/medicines/IMG-20231019-WA0397.jpg&w=750&q=75' },
+      { name: 'Haxisol Hand crub', price: 130, weight: '250ml', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfpo7wrF_a2y6QauzOaXeL_B7ADw92oYnCxw&s' },
+      { name: 'Alcohol Pad', price: 80, weight: '100 pcs', img: 'https://labtexbd.com/wp-content/uploads/2021/11/Alcohol-Pad-100-Pcs-for-Disinfection-in-Bangladesh.jpg' },
+      { name: 'Roller Bandage', price: 50, weight: '1 pack', img: 'https://warsisurgical.com.bd/wp-content/uploads/2021/03/Untitled-17854658.jpg' },
+      { name: 'Peracitamol Extra', price: 30, weight: '1 strip', img: 'https://www.albionbd.com/wp-content/uploads/2021/09/Paracetamol-Extra-Tablet-1.jpg' },
+      { name: 'Cetirizine', price: 70, weight: '1 strip', img: 'https://www.albionbd.com/wp-content/uploads/2021/08/Cetirizine-Tablet.jpg' },
+      { name: 'Omeprazole 40', price: 60, weight: '1strip', img: 'https://5.imimg.com/data5/SELLER/Default/2022/6/MB/MN/BW/25738186/omeprazole-capsule-40mg.jpeg' },
+      { name: 'Hydrocortisone cream', price: 120, weight: '60g', img: 'https://smarthealer.pk/wp-content/uploads/2024/09/hydrocortisone-cream.webp' },
+
+
+    ];
+
+    const cart = [];
+
+    function renderItems() {
+      const container = document.getElementById('itemsContainer');
+      items.forEach((item, i) => {
+        const box = document.createElement('div');
+        box.className = 'item-box';
+        box.innerHTML = `
+          <img src="${item.img}" alt="${item.name}">
+          <h3>${item.name}</h3>
+          <p>Price: ${item.price} BDT</p>
+          <p>Weight: ${item.weight}</p>
+          <label>Quantity: <input type='number' value='1' min='1' id='qty-${i}' style='width: 60px;'></label>
+          <br><button class="save-btn" onclick='addToCart(${i})'>Save to Cart</button>
+        `;
+        container.appendChild(box);
+      });
+    }
+
+    function addToCart(i) {
+      const qty = parseInt(document.getElementById(`qty-${i}`).value);
+      cart.push({ ...items[i], quantity: qty });
+      alert(items[i].name + ' added to cart');
+    }
+
+    function showCart() {
+      document.getElementById('overlay').style.display = 'block';
+      document.getElementById('cart-modal').style.display = 'block';
+      let content = '';
+      let total = 0;
+      cart.forEach(item => {
+        content += `<p>${item.name} x ${item.quantity} = ${item.price * item.quantity} BDT</p>`;
+        total += item.price * item.quantity;
+      });
+      document.getElementById('cartItems').innerHTML = content;
+      document.getElementById('totalPrice').innerText = 'Total: ' + total + ' BDT';
+    }
+
+    function closeCart() {
+      document.getElementById('overlay').style.display = 'none';
+      document.getElementById('cart-modal').style.display = 'none';
+    }
+
+    function openPayment() {
+      document.getElementById('cart-modal').style.display = 'none';
+      document.getElementById('payment-modal').style.display = 'block';
+    }
+
+    function closePayment() {
+      document.getElementById('payment-modal').style.display = 'none';
+      document.getElementById('overlay').style.display = 'none';
+    }
+
+    function showPaymentNumber(method) {
+      document.getElementById('paymentNumber').innerText = `Send to: 017XXXXXXXX (${method})`;
+    }
+
+    function confirmFinalOrder() {
+      alert("Order confirmed! Thanks to cooperate us");
+      closePayment();
+    }
+
+    function finishOrder(method) {
+      alert("Payment method selected: " + method);
+      confirmFinalOrder();
+    }
+
+    renderItems();
+  </script>
+</body>
+</html>

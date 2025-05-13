@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GET CHEGG SOLUTION</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url('https://www.shutterstock.com/image-illustration/luxury-triangle-abstract-black-metal-600nw-2263211489.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+    }
+    .container {
+      text-align: center;
+      margin-top: 80px;
+    }
+    .title {
+      font-size: 2em;
+      font-weight: bold;
+    }
+    .details-box {
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      margin: 20px auto;
+      padding: 20px;
+      width: 90%;
+      max-width: 500px;
+      border-radius: 10px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      width: 60%;
+      margin-top: 15px;
+      border-radius: 4px;
+      border: none;
+    }
+    #sendBtn {
+      padding: 10px 20px;
+      background-color: #00bfff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    #popup {
+      display: none;
+      margin-top: 30px;
+      background-color: #28a745;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="title">GET CHEGG SOLUTION</div>
+    <div class="details-box">
+      Chegg only 5 taka per link.<br /><br />
+      Send 5 taka to get unlock.<br /><br />
+      Bikash: 01766972731<br />
+      Cash: 01316021724<br /><br />
+      Send money and tell the last two digits. You will get the unlock quickly.
+    </div>
+    <div>
+      <label for="linkInput">Given the link which are you want solution</label><br />
+      <input type="text" id="linkInput" placeholder="Paste your link here..." />
+      <button id="sendBtn">Send</button>
+    </div>
+    <div id="popup">Thank you.<br />Wait for 5 minutes.</div>
+  </div>
+
+  <script>
+    const sendBtn = document.getElementById("sendBtn");
+    const popup = document.getElementById("popup");
+
+    sendBtn.addEventListener("click", () => {
+      const input = document.getElementById("linkInput").value.trim();
+      if (input) {
+        fetch("https://script.google.com/macros/s/XXXXXXXXXXXXXXX/exec", { // Replace with your real Web App URL
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ link: input })
+        })
+        .then(response => {
+          if (response.ok) {
+            popup.style.display = "block";
+          } else {
+            alert("Failed to send. Try again.");
+          }
+        })
+        .catch(err => {
+          alert("Error sending data: " + err.message);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Shadow Prescriptions </title>
+  <style>
+  
+  .terms-box {
+      background-color: #f8d7da;
+      color: #721c24;
+      padding: 20px;
+      border: 1px solid #f5c6cb;
+      border-radius: 5px;
+      margin: 10px 0;
+      font-family: Arial, sans-serif;
+      font-size: 18px; /* Set font size to 18px */
+      color: red; /* Set text color to red */
+    }
+	
+    body {
+      background-image: url('https://c4.wallpaperflare.com/wallpaper/922/313/191/abstract-abstraction-biology-chemistry-wallpaper-preview.jpg');
+      background-size: cover;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: rgba(255,255,255,0.8);
+      padding: 10px 20px;
+    }
+    .cart-btn {
+      background-color: red;
+      color: white;
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .items-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      padding: 20px;
+    }
+    .item-box {
+      background-color: white;
+      width: 300px;
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    .item-box img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .save-btn {
+      margin-top: 10px;
+      background-color: orange;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+    }
+    #cart-modal, #payment-modal {
+      display: none;
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      box-shadow: 0 0 20px black;
+      z-index: 1000;
+    }
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1> Shadow Prescriptions </h1>
+    <button class="cart-btn" onclick="showCart()">View Cart</button>
+  </header>
+    <div class="terms-box">
+    <div class="terms-header">Illegal Drugs – Terms & Conditions</div>
+    <ul>
+      <li>❌ <strong>Strictly Prohibited</strong> – No use, possession, sale, or distribution.</li>
+      <li>🚫 <strong>Zero Tolerance</strong> – Immediate action for any violations.</li>
+      <li>⚖️ <strong>Follow Laws</strong> – Must comply with all drug laws.</li>
+      <li>🏢 <strong>Drug-Free Zone</strong> – No drugs allowed on premises.</li>
+      <li>🧪 <strong>Drug Testing</strong> – May occur randomly or as needed.</li>
+      <li>👮 <strong>Legal Action</strong> – Violators may face police/legal action.</li>
+      <li>📢 <strong>Report Issues</strong> – Report any drug-related activity.</li>
+      <li>🔍 <strong>Right to Search</strong> – Belongings may be inspected if needed.</li>
+      <li>🧠 <strong>Get Help</strong> – Support available for those seeking rehab.</li>
+      <li>✂️ <strong>Termination</strong> – Breach may lead to termination or expulsion.</li>
+    </ul>
+  </div>
+  <div class="items-container" id="itemsContainer"></div>
+
+  <div class="overlay" id="overlay"></div>
+
+  <!-- Cart Modal -->
+  <div id="cart-modal">
+    <h2>Your Cart</h2>
+    <div id="cartItems"></div>
+    <p id="totalPrice"></p>
+    <button onclick="openPayment()">Confirm Order</button>
+    <button onclick="closeCart()">Close</button>
+  </div>
+
+  <!-- Payment Modal -->
+  <div id="payment-modal">
+    <h2>Choose Payment Option</h2>
+    <button onclick="finishOrder('Cash on Delivery')">1. Cash on Delivery</button><br><br>
+    <button onclick="showPaymentNumber('Bkash/Nagad')">2. BIT Coin</button><br><br>
+    <button onclick="showPaymentNumber('Card')">3. Card Payment</button><br><br>
+    <div id="paymentNumber"></div>
+    <br>
+    <button onclick="confirmFinalOrder()">Confirm</button>
+    <button onclick="closePayment()">Cancel</button>
+  </div>
+
+  <script>
+    const items = [
+      { name: 'Heroin', price: 35, weight: '05g', img: 'https://images.ctfassets.net/ip74mqmfgvqf/7sRtgG5Zv2q06oAAEyEAaG/9446287b1edc91fa09b9c74ad2eb4a24/FRANK_drug_image_heroin.jpg?fit=scale&f=bottom&q=70&fm=webp&w=3840' },
+      { name: 'Opium', price: 35, weight: '05g', img: 'https://www.shutterstock.com/image-photo/dry-poppy-head-seed-spoon-600nw-2504979259.jpg' },
+      { name: 'Fentanyl', price: 30, weight: '1 strip', img: 'https://www.drugfreekidscanada.org/wp-content/uploads/2023/05/fent-featuerd5.jpg' },
+      { name: 'Morphine ', price: 40, weight: '1 Strip', img: 'https://journeyhillside.com/wp-content/uploads/Morphine_vial-1200x900.jpeg' },
+      { name: 'Codeine ', price: 100, weight: '200g', img: 'https://tiimg.tistatic.com/fp/1/007/818/guaifeberg-cough-syrup-100-ml-197.jpg' },
+      { name: 'LSD ', price: 80, weight: '100g', img: 'https://media.post.rvohealth.io/wp-content/uploads/2019/07/Four-caps-of-LSD-732x549-thumbnail.jpg' },
+      { name: 'Psilocybin ', price: 140, weight: '200', img: 'https://novapsychedelics.com/wp-content/uploads/2021/09/Ecuador-Psilocybe-Cubensis.png' },
+      { name: 'Mescaline', price: 120, weight: '150g', img: 'https://psychemedicald.com/wp-content/uploads/2023/03/Xhanga-003-247x296.webp' },
+      { name: 'DMT', price: 70, weight: '80g', img: 'https://myresearchchemicals.com/wp-content/uploads/2024/06/DMT-3.jpeg' },
+      { name: 'Cocaine', price: 70, weight: '100g', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRIQGtkVcVnMtqCcO2qiLnOJ6g8RxgHeivPLfDPfijPvWPKMozksXo0sucbAZIPogapms&usqp=CAU' },
+      { name: 'Crack Cocaine', price: 50, weight: '80g', img: 'https://upload.wikimedia.org/wikipedia/commons/e/e1/Crack-cocaine-2-grams.jpeg' },
+      { name: 'Methamphetamine ', price: 180, weight: '100g', img: 'https://images.ctfassets.net/ip74mqmfgvqf/1Ujbsu2ihyMsMUmw42Kumc/ac69f147ea5ee591051b74aced0b1de6/FRANK_drug_image_meth.jpg?fit=scale&f=bottom&q=70&fm=webp&w=3840' },
+      { name: 'MDMA ', price: 350, weight: '150g', img: 'https://tonydagostino.co.uk/wp-content/uploads/2015/09/MDMA-crystals.jpg' },
+      { name: 'Amphetamines ', price: 120, weight: '100g', img: 'https://www.newcareonlinepharmac.com/images/product/645cd1a6742735a670f4c3ceb467-450x300.jpg' },
+      { name: 'Cannabis ', price: 150, weight: '150g', img: 'https://www.cosechalibre.com/wp-content/uploads/Transportar_10_@stickylabgenetics-1024x1024-1.jpg' },
+      { name: 'Hashish', price: 120, weight: '250g', img: 'https://cdn.shopify.com/s/files/1/2636/1928/files/What-Is-Hash-OCS.jpg?v=1595354882' },
+      { name: 'Spice K2', price: 80, weight: '250g', img: 'https://media.cnn.com/api/v1/images/stellar/prod/130906122338-synthetic-marijuana-0906.jpg?q=w_2745,h_2706,x_0,y_0,c_fill' },
+	  { name: 'Bath Salts', price: 120, weight: '100g', img: 'https://st5.depositphotos.com/74569002/65668/i/450/depositphotos_656687652-stock-photo-sugar-cubes-clear-glass-jar.jpg' },
+      { name: 'Flakka', price: 150, weight: '150g', img: 'https://ars.els-cdn.com/content/image/1-s2.0-S2352007816302256-gr2.jpg' },
+      { name: 'NBOMe', price: 120, weight: '250g', img: 'https://tiimg.tistatic.com/fp/1/003/213/25b-nbome-663.jpg' },
+      { name: 'GHB ', price: 80, weight: '250g', img: 'https://live-production.wcms.abc-cdn.net.au/2d4bd04b1fa409991e90f9ca48b314bc?impolicy=wcms_crop_resize&cropH=703&cropW=1256&xPos=472&yPos=103&width=862&height=485' },
+      { name: 'Sobranie Black Russian', price: 56, weight: '1 Pac', img: 'https://preview.redd.it/recently-got-some-sobranie-black-russian-for-the-first-time-v0-lr1crr0l0y991.jpg?width=640&crop=smart&auto=webp&s=dceeb4a7acc4b58d9ba5a8dc05845be96bdedf21' },
+      { name: 'Gauloises Brunes ', price: 65, weight: '1Pac', img: 'https://preview.redd.it/gauloises-brunes-filter-v0-rtehl91izbrc1.jpeg?auto=webp&s=8f4d98a42ee345d628021f6293e5b4980a6e2877' },
+	  { name: 'Everclear  ', price: 95, weight: '600ml', img: 'https://preview.redd.it/serious-who-is-genuinely-buying-and-enjoying-190-proof-v0-6tt14g9dexxb1.jpg?width=640&crop=smart&auto=webp&s=3df6212938fb38333623d6cd31a5d5100e491ad2' },
+	  { name: 'Spirytus Rektyfikowany', price: 69, weight: '300ml', img: 'https://www.alkoholeswiata.com/wp-content/uploads/2023/01/20230125_140357-scaled.jpg' },
+	  { name: 'Bruichladdich X4+1 ', price: 102, weight: '1000ml', img: 'https://farm6.staticflickr.com/5560/14945630199_ed6792b301.jpg' },
+	  { name: 'Absinthe Hapsburg Gold ', price: 135, weight: '500ml', img: 'https://mixology.com.tw/images/product/pic/AA03E.jpg' },
+
+    ];
+
+    const cart = [];
+
+    function renderItems() {
+      const container = document.getElementById('itemsContainer');
+      items.forEach((item, i) => {
+        const box = document.createElement('div');
+        box.className = 'item-box';
+        box.innerHTML = `
+          <img src="${item.img}" alt="${item.name}">
+          <h3>${item.name}</h3>
+          <p>Price: ${item.price} BTC</p>
+          <p>Weight: ${item.weight}</p>
+          <label>Quantity: <input type='number' value='1' min='1' id='qty-${i}' style='width: 60px;'></label>
+          <br><button class="save-btn" onclick='addToCart(${i})'>Save to Cart</button>
+        `;
+        container.appendChild(box);
+      });
+    }
+
+    function addToCart(i) {
+      const qty = parseInt(document.getElementById(`qty-${i}`).value);
+      cart.push({ ...items[i], quantity: qty });
+      alert(items[i].name + ' added to cart');
+    }
+
+    function showCart() {
+      document.getElementById('overlay').style.display = 'block';
+      document.getElementById('cart-modal').style.display = 'block';
+      let content = '';
+      let total = 0;
+      cart.forEach(item => {
+        content += `<p>${item.name} x ${item.quantity} = ${item.price * item.quantity} BTC</p>`;
+        total += item.price * item.quantity;
+      });
+      document.getElementById('cartItems').innerHTML = content;
+      document.getElementById('totalPrice').innerText = 'Total: ' + total + ' BTC';
+    }
+
+    function closeCart() {
+      document.getElementById('overlay').style.display = 'none';
+      document.getElementById('cart-modal').style.display = 'none';
+    }
+
+    function openPayment() {
+      document.getElementById('cart-modal').style.display = 'none';
+      document.getElementById('payment-modal').style.display = 'block';
+    }
+
+    function closePayment() {
+      document.getElementById('payment-modal').style.display = 'none';
+      document.getElementById('overlay').style.display = 'none';
+    }
+
+    function showPaymentNumber(method) {
+      document.getElementById('paymentNumber').innerText = `Send to: fxcdf54ds5f4sdf4d5ggdg4d54gfd4g4ds87f87fdd7fg3g4d4g54g4d5dg44s4sg44gdf4gd4g.btc (${method})`;
+    }
+
+    function confirmFinalOrder() {
+      alert("Order confirmed! Thanks to cooperate us");
+      closePayment();
+    }
+
+    function finishOrder(method) {
+      alert("Payment method selected: " + method);
+      confirmFinalOrder();
+    }
+
+    renderItems();
+  </script>
+</body>
+</html>

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>UndergroundPrints.io</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Impact, sans-serif;
+      background-image: url("https://c4.wallpaperflare.com/wallpaper/820/387/589/texture-pattern-wallpaper-preview.jpg");
+      background-size: cover;
+      background-attachment: fixed;
+      color: white;
+    }
+
+    header {
+      padding: 20px;
+    }
+
+    .title {
+      font-size: 36px;
+    }
+
+    .red-box {
+      background-color: red;
+      color: white;
+      padding: 15px;
+      margin: 10px 0;
+    }
+
+    .terms-box {
+      background-color: rgba(128, 128, 128, 0.6);
+      padding: 20px;
+      margin: 20px;
+      border-radius: 10px;
+    }
+
+    .product-box {
+      background-color: rgba(0, 0, 0, 0.7);
+      margin: 20px;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .product {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid white;
+      padding: 15px 0;
+    }
+
+    .product img {
+      width: 100px;
+      height: auto;
+      border-radius: 8px;
+      margin-right: 20px;
+    }
+
+    .product-details {
+      flex: 1;
+      padding-left: 20px;
+    }
+
+    .order-button {
+      padding-left: 20px;
+    }
+
+    .order-button button {
+      background-color: #ff6600;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .order-button button:hover {
+      background-color: #ff3300;
+    }
+
+    #popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("https://wallpapercat.com/w/full/6/d/1/2117703-3840x2160-desktop-4k-dark-background-image.jpg");
+      background-size: cover;
+      background-position: center;
+      z-index: 9999;
+      color: white;
+      padding: 40px;
+      overflow-y: auto;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .confirm-button {
+      margin-top: 20px;
+      background-color: green;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #payment-section {
+      display: none;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    #payment-section img {
+      max-width: 200px;
+      margin-top: 15px;
+    }
+
+    .close-btn {
+      margin-top: 20px;
+      background-color: red;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="title">UndergroundPrints.io</div>
+    <div class="red-box">Welcome to our underground collection!</div>
+  </header>
+
+  <div class="terms-box">
+    <h3>Terms and Conditions</h3>
+    <p> All of our cards here will look 100% like the original.</p>
+    <p> We provide any type of card with complete security and ensure they are fully accessible.</p>
+    <p>Whether it's for an office, school, college, or university — the ID cards will be exactly like the originals, and matching ribbons will also be provided. </p>
+    <p>The ID cards will be directly registered in the IT system to avoid any issues during punch-in or access. </p>
+    <p> A Common ID Card refers to ID cards for various other professions, such as:
+Security officers, staff, workers, constables, firemen, rescue personnel, water supply staff, construction workers, nurses, etc.</p>
+
+    <p>1. All purchases are final. No refunds.</p>
+    <p>2. Orders may take up to 7 days to process.</p>
+    <p>3. Make sure all your details are correct before confirming.</p>
+  </div>
+
+  <div class="product-box">
+    <!-- 10 Products -->
+    <!-- You can replace image src, name, number, price later -->
+
+    <!-- Product 1 -->
+    <div class="product">
+      <img src="https://file-rajshahi.portal.gov.bd/uploads/84af0435-8055-486b-a4ca-5871e6f01176//66f/b7e/0f6/66fb7e0f6fbb9930627745.png" alt="NID PIcture">
+      <div class="product-details">
+        <h3>Bangladesh NID (Smart card)</h3>
+        <p>Product No: 002156156</p>
+        <p>Price: 80,000 BDT</p>
+      </div>
+      <div class="order-button">
+        <button onclick="showPopup()">Order</button>
+      </div>
+    </div>
+
+    <!-- Product 2 -->
+    <div class="product">
+      <img src="https://ichef.bbci.co.uk/ace/ws/640/cpsprodpb/15AF/production/_121015550_23.jpg.webp" alt="Driving License">
+      <div class="product-details">
+        <h3>Bangladesh Driving License</h3>
+        <p>Product No: 0055454552</p>
+        <p>Price: 55,000 BDT</p>
+      </div>
+      <div class="order-button">
+        <button onclick="showPopup()">Order</button>
+      </div>
+    </div>
+
+    <!-- Product 3 -->
+    <div class="product">
+      <img src="https://t3.ftcdn.net/jpg/02/72/40/44/360_F_272404412_MD9Qnk52bpTk9BEhpq2ZofYupyF8UWbg.jpg" alt="School ID card">
+      <div class="product-details">
+        <h3>School Student Card</h3>
+        <p>Product No: 0018956433</p>
+        <p>Price: 15000 BDT</p>
+      </div>
+      <div class="order-button">
+        <button onclick="showPopup()">Order</button>
+      </div>
+    </div>
+
+    <!-- Product 4 -->
+    <div class="product">
+      <img src="https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/214527372/original/b96cba818ac3d4f99ccbc420d13566a9a6d34bac/student-card-cadet-college.jpg" alt="College Card">
+      <div class="product-details">
+        <h3>College Card</h3>
+        <p>Product No: 0045866454</p>
+        <p>Price: 18000 BDT</p>
+      </div>
+      <div class="order-button">
+        <button onclick="showPopup()">Order</button>
+      </div>
+    </div>
+
+    <!-- Product 5 -->
+    <div class="product">
+      <img src="https://1card.com.bd/web/image/379-3e7455f0/student_card.png" alt="University student card">
+      <div class="product-details">
+        <h3>University Student Card</h3>
+        <p>Product No: 0058431355</p>
+        <p>Price: 20000 BDT</p>
+      </div>
+      <div class="order-button">
+        <button onclick="showPopup()">Order</button>
+      </div>
+    </div>
+
+    <!-- Product 6 -->
+    <div class="product">
+      <img src="https://5.imimg.com/data5/SELLER/Default/2024/2/387642711/NG/YR/QT/12421059/id-card.jpg" alt="Doctor card">
+      <div class="product-details">
+        <h3>Fake Doctor ID Card</h3>
+        <p>Product No: 004586216</p>
+        <p>Price: 215000 BDT</p>
+      </div>
+      <div class="order-button">
+        <button onclick="showPopup()">Order</button>
+      </div>
+    </div>
+
+    <!-- Product 7 -->
+    <div class="product">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqut3NyGrYRqUkDLI3nR5M_0pdP8mVR8SWencHH2jkgexlZ1f92b4N7WdBC7Nb3s-cqUw&usqp=CAU" alt="police card">
+      <div class="product-details">
+        <h3>Police Card (OCI)</h3>
+        <p>Product No: 004515717</p>
+        <p>Price: 150000 BDT</p>
+      </div>
+      <div class="order-button">
+        <button onclick="showPopup()">Order</button>
+      </div>
+    </div>
+
+    <!-- Product 8 -->
+    <div class="product">
+      <img src="https://ml1vwsk4bosk.i.optimole.com/cb:oDcg.562c8/w:265/h:420/q:mauto/ig:avif/https://amarschool.co/wp-content/uploads/2024/04/Teacher-ID-card-1.jpg" alt="Teacher card">
+      <div class="product-details">
+        <h3>Fake Teacher card (School/university/college)</h3>
+        <p>Product No: 0054585258</p>
+        <p>Price: 50000 BDT</p>
+      </div>
+      <div class="order-button">
+        <button onclick="showPopup()">Order</button>
+      </div>
+    </div>
+
+    <!-- Product 9 -->
+    <div class="product">
+      <img src="https://lh3.googleusercontent.com/proxy/6FRdtWCjoxbjZfIcbAmZssHfW9RDuwHjKJLlXEAE8PFwmcOnCqZss0RBm6M6aP5rouK-UgW_CLFEx2nrQyM_Dma8QuP147hSioOMHP_fudhD6NFPYOUXFgSM2y9YKA" alt="common card">
+      <div class="product-details">
+        <h3>Common ID card</h3>
+        <p>Product No: 005484245459</p>
+        <p>Price: 87000 BDT</p>
+      </div>
+      <div class="order-button">
+        <button onclick="showPopup()">Order</button>
+      </div>
+    </div>
+
+    <!-- Product 10 -->
+    <div class="product">
+      <img src="https://assets.freelogoservices.com/sites/all/themes/freelogoservices/images/bcworkflow/bc_lp_grey_top_bkg.jpg" alt="Visiting card">
+      <div class="product-details">
+        <h3>Fake Visiting card</h3>
+        <p>Product No: 015768310</p>
+        <p>Price: 30000 BDT</p>
+      </div>
+      <div class="order-button">
+        <button onclick="showPopup()">Order</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Order Popup Form -->
+  <div id="popup">
+    <h2>Order Form</h2>
+    <div class="form-group"><input type="text" placeholder="Full Name"></div>
+    <div class="form-group"><input type="text" placeholder="Age"></div>
+    <div class="form-group"><input type="text" placeholder="Home Address"></div>
+    <div class="form-group"><input type="text" placeholder="Permanent Address"></div>
+    <div class="form-group"><input type="text" placeholder="Religion"></div>
+    <div class="form-group"><input type="text" placeholder="Mobile Number"></div>
+    <div class="form-group"><input type="text" placeholder="Father's Name"></div>
+    <div class="form-group"><input type="text" placeholder="Mother's Name"></div>
+    <div class="form-group"><input type="text" placeholder="Blood Group"></div>
+    <div class="form-group"><input type="text" placeholder="SSC Roll Number"></div>
+    <div class="form-group"><input type="text" placeholder="SSC Registration Number"></div>
+    <div class="form-group"><input type="text" placeholder="HSC Roll Number"></div>
+    <div class="form-group"><input type="text" placeholder="HSC Registration Number (optional)"></div>
+    <div class="form-group">
+      <select>
+        <option>Gender</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="form-group"><input type="date" placeholder="Date of Birth"></div>
+    <button class="confirm-button" onclick="showPayment()">Confirm</button>
+
+    <div id="payment-section">
+      <h3>Please Pay 30000 BDT.</h3>
+      <img src="https://miro.medium.com/v2/resize:fit:789/1*A9YcoX1YxBUsTg7p-P6GBQ.png" alt="QR Code">
+      <br>
+      <button class="close-btn" onclick="closePopup()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    function showPopup() {
+      document.getElementById('popup').style.display = 'block';
+      document.getElementById('payment-section').style.display = 'none';
+      window.scrollTo(0, 0);
+    }
+
+    function showPayment() {
+      document.getElementById('payment-section').style.display = 'block';
+    }
+
+    function closePopup() {
+      document.getElementById('popup').style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>

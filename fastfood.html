@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fastfood - Hasna Food</title>
+  <style>
+    body {
+      background-image: url('https://media.istockphoto.com/id/959262284/vector/cartoon-cute-hand-drawn-fast-food-seamless-pattern.jpg?s=612x612&w=0&k=20&c=vFFQaAumzV5TeDUlP_NsGzHh5UqeXxyFNTqVVghdwQ0=');
+      background-size: cover;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: rgba(255,255,255,0.8);
+      padding: 10px 20px;
+    }
+    .cart-btn {
+      background-color: red;
+      color: white;
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .items-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      padding: 20px;
+    }
+    .item-box {
+      background-color: white;
+      width: 300px;
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    .item-box img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .save-btn {
+      margin-top: 10px;
+      background-color: orange;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+    }
+    #cart-modal, #payment-modal {
+      display: none;
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      box-shadow: 0 0 20px black;
+      z-index: 1000;
+    }
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Hasna Food - Fastfood Menu</h1>
+    <button class="cart-btn" onclick="showCart()">View Cart</button>
+  </header>
+
+  <div class="items-container" id="itemsContainer"></div>
+
+  <div class="overlay" id="overlay"></div>
+
+  <!-- Cart Modal -->
+  <div id="cart-modal">
+    <h2>Your Cart</h2>
+    <div id="cartItems"></div>
+    <p id="totalPrice"></p>
+    <button onclick="openPayment()">Confirm Order</button>
+    <button onclick="closeCart()">Close</button>
+  </div>
+
+  <!-- Payment Modal -->
+  <div id="payment-modal">
+    <h2>Choose Payment Option</h2>
+    <button onclick="finishOrder('Cash on Delivery')">1. Cash on Delivery</button><br><br>
+    <button onclick="showPaymentNumber('Bkash/Nagad')">2. Bkash/Nagad</button><br><br>
+    <button onclick="showPaymentNumber('Card')">3. Card Payment</button><br><br>
+    <div id="paymentNumber"></div>
+    <br>
+    <button onclick="confirmFinalOrder()">Confirm</button>
+    <button onclick="closePayment()">Cancel</button>
+  </div>
+
+  <script>
+    const items = [
+      { name: 'Burger', price: 150, weight: '250g', img: 'https://cdn.pixabay.com/photo/2016/03/05/19/02/hamburger-1238246_960_720.jpg' },
+      { name: 'Pizza', price: 300, weight: '500g', img: 'https://cdn.pixabay.com/photo/2017/12/09/08/18/pizza-3007395_960_720.jpg' },
+      { name: 'Mango Juice', price: 80, weight: '250ml', img: 'https://www.alphafoodie.com/wp-content/uploads/2022/02/How-to-make-Mango-Juice-Square.jpeg' },
+      { name: 'Fried Chicken', price: 200, weight: '300g', img: 'https://www.allrecipes.com/thmb/q-IfK20zxeyp1DgKWhrVp6CQ43w=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/AR-89268-triple-dipped-fried-chicken-beauty-4x3-3961ac838ddd41958e7cb9f49376cd68.jpg' },
+      { name: 'French Fries', price: 100, weight: '200g', img: 'https://kirbiecravings.com/wp-content/uploads/2019/09/easy-french-fries-1.jpg' },
+      { name: 'Chicken Shorma', price: 200, weight: '380g', img: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj4APZUzbaqHB0XFLMvY3YfaiiqKfyB-XERfP7xd30s2iRrz8XI_5icda0vmbW9sD24r6n2tRGNOQvIer7Sbtjz9yfR7ZW5Y39Q3f5j8HeV3uNdlOz4GC5Mpjb0Bxh6pkBG17wW2762coEl/s280/chicken+shorm.jpg' },
+      { name: 'Beef Chili Burger', price: 500, weight: '380g', img: 'https://www.certifiedirishangus.ie/wp-content/uploads/2019/11/TheUltimateBurgerwBacon_RecipePic.jpg' },
+      { name: 'Chicken wings', price: 420, weight: '320g', img: 'https://bakerbynature.com/wp-content/uploads/2015/02/Sweet-and-Spicy-Sriracha-Chicken-Wings-0-11.jpg' },
+      { name: 'Chicken Rice Meal', price: 1050, weight: '600g', img: 'https://www.cookingclassy.com/wp-content/uploads/2020/01/chicken-and-rice-15.jpg' },
+      { name: 'Chicken Mini warp', price: 800, weight: '400g', img: 'https://c.ndtvimg.com/2022-10/vqi45ctg_wrap_625x300_11_October_22.jpg' },
+      { name: 'Chicken Popcorn', price: 500, weight: '500g', img: 'https://insanelygoodrecipes.com/wp-content/uploads/2024/05/Popcorn-Chicken-Featured-500x500.jpg' },
+      { name: 'Chicker SUB', price: 600, weight: '320g', img: 'https://smileysgrill.com/wp-content/uploads/2020/02/Submarine-3-scaled.jpg' },
+      { name: 'Straberry Juice', price: 180, weight: '250ml', img: 'https://yummyindiankitchen.com/wp-content/uploads/2019/06/strawberry-juice-recipe.jpg' },
+      { name: 'Orange Juice', price: 210, weight: '250ml', img: 'https://i.pinimg.com/474x/e7/fd/41/e7fd413f9eb0f1425c39aafb25843068.jpg' },
+      { name: 'Mint Juice', price: 120, weight: '250ml', img: 'https://thetravelbite.com/wp-content/uploads/2021/06/Mint-Lemonade-TheTravelBite.com-16-scaled.jpg' },
+    ];
+
+    const cart = [];
+
+    function renderItems() {
+      const container = document.getElementById('itemsContainer');
+      items.forEach((item, i) => {
+        const box = document.createElement('div');
+        box.className = 'item-box';
+        box.innerHTML = `
+          <img src="${item.img}" alt="${item.name}">
+          <h3>${item.name}</h3>
+          <p>Price: ${item.price} BDT</p>
+          <p>Weight: ${item.weight}</p>
+          <label>Quantity: <input type='number' value='1' min='1' id='qty-${i}' style='width: 60px;'></label>
+          <br><button class="save-btn" onclick='addToCart(${i})'>Save to Cart</button>
+        `;
+        container.appendChild(box);
+      });
+    }
+
+    function addToCart(i) {
+      const qty = parseInt(document.getElementById(`qty-${i}`).value);
+      cart.push({ ...items[i], quantity: qty });
+      alert(items[i].name + ' added to cart');
+    }
+
+    function showCart() {
+      document.getElementById('overlay').style.display = 'block';
+      document.getElementById('cart-modal').style.display = 'block';
+      let content = '';
+      let total = 0;
+      cart.forEach(item => {
+        content += `<p>${item.name} x ${item.quantity} = ${item.price * item.quantity} BDT</p>`;
+        total += item.price * item.quantity;
+      });
+      document.getElementById('cartItems').innerHTML = content;
+      document.getElementById('totalPrice').innerText = 'Total: ' + total + ' BDT';
+    }
+
+    function closeCart() {
+      document.getElementById('overlay').style.display = 'none';
+      document.getElementById('cart-modal').style.display = 'none';
+    }
+
+    function openPayment() {
+      document.getElementById('cart-modal').style.display = 'none';
+      document.getElementById('payment-modal').style.display = 'block';
+    }
+
+    function closePayment() {
+      document.getElementById('payment-modal').style.display = 'none';
+      document.getElementById('overlay').style.display = 'none';
+    }
+
+    function showPaymentNumber(method) {
+      document.getElementById('paymentNumber').innerText = `Send to: 017XXXXXXXX (${method})`;
+    }
+
+    function confirmFinalOrder() {
+      alert("Order confirmed! Thanks to cooperate us");
+      closePayment();
+    }
+
+    function finishOrder(method) {
+      alert("Payment method selected: " + method);
+      confirmFinalOrder();
+    }
+
+    renderItems();
+  </script>
+</body>
+</html>

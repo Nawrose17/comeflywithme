@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cupid's Arrow</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-image: url('https://t3.ftcdn.net/jpg/02/73/34/02/360_F_273340247_RxtsaoZrs7vDsjlYPrBBbRJTSSM1EguV.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      color: #333;
+    }
+
+    header {
+      background-color: rgba(255, 0, 0, 0.8);
+      color: white;
+      padding: 20px;
+      font-family: 'Press Start 2P', cursive;
+      text-align: center;
+    }
+    header img {
+      width: 80px;
+      height: auto;
+      vertical-align: middle;
+    }
+    .instruction-box {
+      background-color: rgba(173, 216, 230, 0.6);
+      margin: 20px auto;
+      padding: 20px;
+      width: 80%;
+      border-radius: 10px;
+      color: #000;
+      font-weight: bold;
+    }
+    .profiles {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      padding: 15px;
+    }
+    .profile-box {
+      display: flex;
+      background: rgba(255,255,255,0.9);
+      border-radius: 15px;
+      padding: 15px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .profile-left img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+    }
+    .profile-mid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-left: 10px;
+      flex: 1;
+    }
+    .profile-section {
+      display: flex;
+      justify-content: space-between;
+    }
+    .profile-right {
+      margin-left: 30px;
+    }
+    .hire-button {
+      padding: 10px 15px;
+      background-color: crimson;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      border: 2px solid #000;
+      z-index: 1000;
+      border-radius: 10px;
+    }
+    .popup.active {
+      display: block;
+    }
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 999;
+    }
+    .overlay.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="https://thumbs.dreamstime.com/b/heart-cupid-cartoon-character-flying-bow-arrow-heart-cupid-cartoon-character-flying-bow-arrow-vector-207705316.jpg" alt="Cupid Logo">
+    Cupid's Arrow
+  </header>
+  <div class="instruction-box">
+  <p>Must be at least 18 years old to register and use the site.
+
+Users must provide accurate and truthful information during registration.</p>
+ <p>Prohibited Behavior:</p>
+<p>No harassment, threats, or offensive language.</p>
+
+<p>No fake profiles, catfishing, or impersonation.</p>
+
+<p>No nudity, pornography, or sexually explicit content.</p>
+
+<p>Do not promote or engage in illegal activities.  </p>
+<p>Accounts may be suspended or deleted for violating any rule.
+
+Repeated violations may lead to permanent banning without notice.</p>
+
+  </div>
+  <div class="profiles">
+
+<!-- Profile Loop Start -->
+<script>
+const profiles = [
+  { name: "Ayesha Akter", age: 23, location: "Dhanmondi", religion: "Muslim", profession: "Student", status: "Single", price: 1500, img: "https://miro.medium.com/v2/resize:fit:1128/1*v5Fv5mMf8DHGFzsGLanbSw.jpeg" },
+  { name: "Priya Saha", age: 25, location: "Gulshan", religion: "Hindu", profession: "Doctor", status: "Single", price: 2500, img: "https://images.unsplash.com/photo-1727934404459-48ba939f9e11?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGJhbmdsYWRlc2glMjBob3QlMjBnaXJsfGVufDB8fDB8fHww" },
+  { name: "Maria Gomes", age: 27, location: "Banani", religion: "Christian", profession: "Nurse", status: "Single", price: 2000, img: "https://www.shutterstock.com/image-photo/beautiful-south-indian-bangladeshi-girl-260nw-2204962955.jpg" },
+  { name: "Sharmin Jahan", age: 21, location: "Uttara", religion: "Muslim", profession: "Police", status: "Divorced", price: 1800, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIWdTZkOc7eU8HLCDZxX6PNevz7va0wumWGA&s" },
+  { name: "Sumaiya Kabir", age: 22, location: "Mohakhali", religion: "Muslim", profession: "Dancer", status: "Single", price: 2200, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnrom_048-953T84JBmw9v9SkyQubfWTk6MQ&s" },
+  { name: "Nusrat Jahan", age: 28, location: "Mirpur", religion: "Muslim", profession: "Cashier", status: "Married", price: 1800, img: "https://img.fotocommunity.com/another-girl-from-bangladesh-9228febe-ace0-496a-981e-d588d4ee8bbf.jpg?height=1000" },
+  { name: "Sneha Roy", age: 24, location: "Tejgaon", religion: "Hindu", profession: "Modeler", status: "Single", price: 2700, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXNsFHJQQfwg7Jo9EBMmRUhX5yuus4_w9MRsc0b45_MK-QfgfWO9qWZ7kkDUPyAdFHQFY&usqp=CAU" },
+  { name: "Jerin Maria", age: 26, location: "Rampura", religion: "Christian", profession: "Teacher", status: "Widowed", price: 2300, img: "https://images.pexels.com/photos/13334341/pexels-photo-13334341.jpeg?cs=srgb&dl=pexels-swarupdhar-13334341.jpg&fm=jpg" },
+  { name: "Afia Islam", age: 20, location: "Bashundhara", religion: "Muslim", profession: "Student", status: "Single", price: 1600, img: "https://i.pinimg.com/736x/85/cb/28/85cb28cb73be8f854fa301df79351599.jpg" },
+  { name: "Ritu Das", age: 29, location: "Farmgate", religion: "Hindu", profession: "Doctor", status: "Single", price: 2400, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTH-j8rBorf02QNADD1IeFi3fqGGCR3dWEAuBywOaONNw9N_9r9GaOlBho5dWdB5UQu5H4&usqp=CAU" },
+  { name: "Sanaya Ahmed", age: 32, location: "Khilgaon", religion: "Muslim", profession: "Nurse", status: "Married", price: 2100, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSH-WxhB2z1aIQ5JWP1WQd2rfK0Tx_AxjGD-A&s" },
+  { name: "Sabina Akter", age: 30, location: "Jatrabari", religion: "Muslim", profession: "Police", status: "Divorced", price: 1700, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRM4aWa9ZpvSP2A_FWHPsrEazxGksiBWfPrRRbxVjH1fANAdGu95R6GII1wR7oyp5capHs&usqp=CAU" },
+  { name: "Tania Hossain", age: 23, location: "Shantinagar", religion: "Muslim", profession: "Dancer", status: "Single", price: 2200, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-M_xv7-1fVEMUC0wSuxBNgzTIG8yI0n5E1A&s" },
+  { name: "Rakhi Paul", age: 25, location: "Badda", religion: "Hindu", profession: "Cashier", status: "Single", price: 2000, img: "https://i.pinimg.com/280x280_RS/bf/8c/99/bf8c99ac3a56d416e2efc11268266c09.jpg" },
+  { name: "Julie Rozario", age: 27, location: "Motijheel", religion: "Christian", profession: "Modeler", status: "Widowed", price: 2600, img: "https://i.pinimg.com/736x/50/cd/60/50cd6039e505ecf539d17a684b29f260.jpg" },
+  { name: "Mim Akter", age: 19, location: "Kakrail", religion: "Muslim", profession: "Teacher", status: "Single", price: 1900, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbi6W1y27ou5_7TwMhH4tLIePxgLGxhzYzzNIhdmqdb2jU41hxVXWLsRJvp34szOBwooY&usqp=CAU" },
+  { name: "Nila Begum", age: 35, location: "Malibagh", religion: "Muslim", profession: "Cashier", status: "Divorced", price: 1600, img: "https://pbs.twimg.com/profile_images/1387317947895410689/cHUUQciZ_400x400.jpg" },
+  { name: "Ruma Khatun", age: 22, location: "Khilkhet", religion: "Muslim", profession: "Doctor", status: "Single", price: 2500, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGMjPIY5dJVJgTtSgDmR4ULEywzMCBfTLluhbM1_NY7XhmOPNy68qR286FplIgLBYLOBU&usqp=CAU" },
+  { name: "Shapla Mondol", age: 28, location: "Mohammadpur", religion: "Hindu", profession: "Teacher", status: "Single", price: 2200, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1D1TCXDkNx9tm66oY00JPezsRDjWJOKVv3BDyLe04d-zLyUllVEfZRpAx3t6uBH-q0tI&usqp=CAU" },
+  { name: "Hena Jamila", age: 26, location: "Agargaon", religion: "Christian", profession: "Modeler", status: "Single", price: 2700, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlh3u5yxi5sqvCdNoGGLZUGKGDA0hurem_5g&s" },
+{ name: "Pia Chowdhury", age: 24, location: "Bashundhara R/A", religion: "Muslim", profession: "Student", status: "Single", price: 3700, img: "https://scontent.fzyl2-2.fna.fbcdn.net/v/t39.30808-6/480589822_1447222859584002_2688478819103787179_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeGmdNQRTCvjeU01-y9Fo5lCGU1vrVjG8ZUZTW-tWMbxld9veXZmNHEPOvaRGiyzCh-3O0Tn4mBvCjy3pK9pZfGO&_nc_ohc=LEOjdphQYt8Q7kNvwFyThuG&_nc_oc=AdlxcCgz133naf0b5XBLI-M_U4muqE7Y2ArvZsindriaPCaGaoL0ssFPqudbiYVN8f4&_nc_zt=23&_nc_ht=scontent.fzyl2-2.fna&_nc_gid=eZc17Wq2FkgXFRhlb6nHkA&oh=00_AfLLCN_c8Fu5fndWafbLohvSZjxgV_ZWTXkgajP1k4z_cg&oe=6823E8E8" },
+{ name: "Mahbuba Sammi", age: 23, location: "Gazipur,Tongi", religion: "Muslim", profession: "Customer care", status: "Single", price: 3500, img: "https://scontent.fzyl2-2.fna.fbcdn.net/v/t39.30808-6/490570810_1226329059499716_5667780802091405791_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeH3ZEqZtwJfU1_FLsTjbOjNeteqYu1WlaR616pi7VaVpFWDdbwIuGUV4uSj9qRpO7v9wNbgyvMB_ZxBSG1Vy08d&_nc_ohc=1KJlnx00yZQQ7kNvwGg7GFZ&_nc_oc=AdnfDpwaPT23pR_fSdu_hPfqBjcovKMfJ_dWDFKzUcAxwnkOofsR9EfdFAeSj8Pv2IE&_nc_zt=23&_nc_ht=scontent.fzyl2-2.fna&_nc_gid=HcF8mZDPH--aBfrC_MzbOA&oh=00_AfJD3pYb8T-tC_yDyhaLKFmFxi_bpOWtaP40q68Wwx_2gA&oe=682408DB" },
+{ name: "Naznin Akter Riva", age: 26, location: "Rajlokkhi Uttara", religion: "Muslim", profession: "Jober", status: "Single", price: 2700, img: "https://scontent.fzyl2-2.fna.fbcdn.net/v/t39.30808-6/488229985_4115394695414389_3924493883654074262_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGpG7cwgxqq5VORWLF8GgOL7H4nJZ4-rt_sficlnj6u37FGwOJ0D-YZmKU0RnF4WIituhI-3f3WFryx_NHbpk_7&_nc_ohc=q_9VFQjZMg4Q7kNvwHkrp7D&_nc_oc=AdmpIuTSzzmCntnWXM6-zsbzy95JYoTIds5gEiEl1Drc_a5YpnJBbyNnzMgR0QJCMtc&_nc_zt=23&_nc_ht=scontent.fzyl2-2.fna&_nc_gid=DxG7otLyn4_yLVo6AG05MQ&oh=00_AfKjNS0xgwQu3M1FcZ8B0o9OLJhgWo9FZ1LNV2Zju4j-fw&oe=68240CF3" },
+{ name: "Fhamida Aysharjo", age: 24, location: "Gulshan,Niketon", religion: "Non", profession: "Modeler", status: "Single", price: 2700, img: "https://scontent.fzyl2-2.fna.fbcdn.net/v/t39.30808-6/465247077_1256675215524212_1584183854440873236_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeE1e6D3V5lQswkvV5-1zfhZr3SEANNU49SvdIQA01Tj1Ah2YqvM2l9HLx2uz2wlIGWwq85KF2ZZjji_gHCWwtt8&_nc_ohc=lAOsiKwrzg8Q7kNvwFi6AVp&_nc_oc=AdnpnZ6V5EnzRu-kozt0WjbV5_YBEtR84uw49wrPe_TZHwKCInn10VYWzgtoYE1wN10&_nc_zt=23&_nc_ht=scontent.fzyl2-2.fna&_nc_gid=avjaVJ7NTTKepkzcF5qSkQ&oh=00_AfLnDPKphqqLDIkHShPeGlXkt2xy8kIgkmijGKYvnxLi2w&oe=6823ED3B" },
+{ name: "Bintee Mariya", age: 26, location: "Kapasia,Gazipur", religion: "Muslim", profession: "Housewife", status: "Married", price: 2700, img: "https://scontent.fzyl2-2.fna.fbcdn.net/v/t39.30808-6/488613599_1843402399752892_5247879743151467188_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeHEz2S0NPTVh8mQiyavpkMfy1tR4IGk74DLW1HggaTvgC5TiypPKHy90n0wnuKM_9iZSB6rYG55FpsoiW_G2MvR&_nc_ohc=-OsAOn6IRTkQ7kNvwEwRTn4&_nc_oc=AdnwC5VG_n6DPasCVYSpo2PXHIo91zBMTBDF-RNgTPqDckVDchygcH0T8yXV-2e5Qq8&_nc_zt=23&_nc_ht=scontent.fzyl2-2.fna&_nc_gid=y0M9Rb1Q_thuyYaaEBVBpA&oh=00_AfKrtgv16_w3v6AuRJ1hA_DVvyURtZuqXWw1BAEW3Dv3XQ&oe=682401D3" },
+{ name: "Orna Islam", age: 24, location: "Bashundhara R/A", religion: "Muslim", profession: "Student", status: "Married", price: 4700, img: "https://scontent.fzyl2-2.fna.fbcdn.net/v/t39.30808-6/482005991_1602689981123950_4367152956749463130_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeGzGU4gcJCGrq5dfYNsMU4YkfbHnUYQUj6R9sedRhBSPl1v1I0erZJ7B5eO6xaWlWPreD3sL7NYvesux5DBMYx0&_nc_ohc=bYd9CnsF2koQ7kNvwErGcRt&_nc_oc=AdnsCBsMrNHXPFnb1KqVoZEJhJk1U6YzL5ClPZSUmppfTcKYW54yyUzTLPPeBc8sRmY&_nc_zt=23&_nc_ht=scontent.fzyl2-2.fna&_nc_gid=fLXg3fko8UAZA-rtKpTEPw&oh=00_AfL1igHE1g-7RVo5QUwtrf6WLJGNV3vrrOBzOJbwigcHOg&oe=682402F2" },
+{ name: "Nila Chowdhory", age: 24, location: "Uttara", religion: "Islam", profession: "HouseWife", status: "devorced", price: 3000, img: "https://scontent.fzyl2-2.fna.fbcdn.net/v/t39.30808-6/483547728_570558019369006_5200464350117397602_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGZhvWS8gbn6qou-82Fs1HgBLZELIDQNvAEtkQsgNA28GFRUi4M2OU6vLLxZRCFrhiUJ8na4-3NgygD2d3b7C9z&_nc_ohc=aE6P28l9gCcQ7kNvwE8aMLk&_nc_oc=AdmxoOrvB7vN-ds7TteAvpyBOLFOMYTK6uDEOQACjtpO_ZVf0gnRop3Geal6P4SNQwo&_nc_zt=23&_nc_ht=scontent.fzyl2-2.fna&_nc_gid=STGoTypFnb3vkjUcBorBSg&oh=00_AfINMR59vpEyjcI56soGtPD-KYcSAR0oKjz1J1fS1Ib6PQ&oe=68240B6A" },
+{ name: "Mohsina", age: 23, location: "Rajshahi", religion: "Muslim", profession: "Student", status: "Single", price: 1700, img: "https://scontent.fzyl2-2.fna.fbcdn.net/v/t39.30808-6/481181666_1130874908736851_531154985773920536_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeHgN-Orpsx0HgxrrbdsUerSHLkyprfUrPgcuTKmt9Ss-PirCqW2_QILhsIT2EQSL6hLzHAPWPry0PiZT2qm9Btq&_nc_ohc=OtZoM5iUMtwQ7kNvwF8bWIx&_nc_oc=Adn-QQ_2XS_3tDdZTQe053GcBoxa_ozQMUMHFqAy7y6xp1JI_FYWwCJ3pgMRYOsODjk&_nc_zt=23&_nc_ht=scontent.fzyl2-2.fna&_nc_gid=OtpVOXWC4BjBI9I2-7Sbgw&oh=00_AfKw8PJ0srrmVwnNAZiNWxTv5L5yhWeZh4SLtcarV8epDA&oe=68241617" },
+{ name: "Aysha Asha", age: 24, location: "Gazipur,Salna", religion: "Islam", profession: "Housewife", status: "Married", price: 2700, img: "https://scontent.fzyl2-2.fna.fbcdn.net/v/t39.30808-6/478283050_1146514883773851_863345370787369976_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeEujU23UCkc43wY6-2h_4zBF86PyCbCpYoXzo_IJsKlioHhITrbNr5IMwFG6Rn9tC89_ARG571fecjVbEMXIj_5&_nc_ohc=lLNJ2Q-JCKgQ7kNvwGDP-rl&_nc_oc=Adl86MV7MJQr-y1ZYzLvqpB9mdTqNJq8j-qlud9rwq59Exb124nZO4RoCMEPNUPjMso&_nc_zt=23&_nc_ht=scontent.fzyl2-2.fna&_nc_gid=2ElSiVzkXQic_s32WZWusg&oh=00_AfJhwP_pkUGLM5WZvKHZuaB6-wj01BeEO12OqKDhxduung&oe=6823FD00" },
+{ name: "Fahmida Rahman Trisha", age: 35, location: "Gazipur,Chowrasta", religion: "Islam", profession: "Prentainer", status: "Single", price: 4700, img: "https://scontent.fzyl2-2.fna.fbcdn.net/v/t39.30808-6/489453243_9686533421392506_6722581282959996515_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeHDhnzGUxOSWBlctB_aMuG3mJgT8BXE1FSYmBPwFcTUVDJ81UdMtHqHSaXFShQXPGJ2b63hnHL2jc2aPR24NXd5&_nc_ohc=5mK9L8fpt_oQ7kNvwGP_Wfn&_nc_oc=Adkq0z9RotLzqs9XAoUYXXVin0dd1cTOFbwiLE178xNDFNNQWTMTHSpIv0ALZRwWGaQ&_nc_zt=23&_nc_ht=scontent.fzyl2-2.fna&_nc_gid=8yDaiubWfpbjcBXF2P_Qrw&oh=00_AfJizCWvrQVPVgA_xw0FdEgnFV5BQaZ6WTCqdnBMnr6PxQ&oe=682415D7" },
+{ name: "Taslima Mithi", age: 24, location: "Gazipur,Purabari", religion: "Islam", profession: "student", status: "Married", price: 2700, img: "https://scontent.fzyl2-2.fna.fbcdn.net/v/t1.6435-9/105294651_320097782357026_3664517023166772488_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFHsVhQeSmoFd-t7aH7kT3vWe991h_UfodZ733WH9R-h1tHPRAVNEyUJSc8Dh_X4S00o9wvfVwQvGPVMoAV6drK&_nc_ohc=1mDTS36BxmgQ7kNvwG3GDCA&_nc_oc=Adk4l5kp26f8sTU8nWI5InQz8ucKtrncTSOyeX2PmH_aIPOFYvWIwv9hqTMaKzg4Ac8&_nc_zt=23&_nc_ht=scontent.fzyl2-2.fna&_nc_gid=CWEjO8pjABcVlZbKZ9x3WA&oh=00_AfKtfHTzViQWoYNLcSZnx7C-vAyX2UoOVSKlwHjn4ZOOcw&oe=6845BA7C" },
+{ name: "Heya Khan", age: 24, location: "NarayonGanj,Sindhirganj", religion: "Islam", profession: "Housewife", status: "Married", price: 2700, img: "https://scontent.fzyl2-2.fna.fbcdn.net/v/t39.30808-6/482135391_1387880635967007_3266526544348797994_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeFXrITFsUeLHybu2La-aTvp2bbNvHRpxbnZts28dGnFuU0ZJkUvhuNacW2-flMIXU2YGdyb4QcEXC2kEKufLGX_&_nc_ohc=4afKvqbNaJYQ7kNvwEevyFV&_nc_oc=AdnoaC7Ao0JCVL1M7p544ATDVbwE7bRKX7XEchYIyQtW_t-fos_xS7NN728v2D5z-Y8&_nc_zt=23&_nc_ht=scontent.fzyl2-2.fna&_nc_gid=NIVNuwkFKv64dz7cUSUv4A&oh=00_AfKy_1WqZ6LZEzX6Y8LyF40IEO_3ybjivBgO2sJVykK_7g&oe=6824268C" },
+
+
+
+];
+
+
+function createProfile(profile) {
+  return `
+    <div class="profile-box">
+      <div class="profile-left">
+        <img src="${profile.img}" alt="${profile.name}" />
+      </div>
+      <div class="profile-mid">
+        <div class="profile-section">
+          <div><strong>Name:</strong> ${profile.name}</div>
+          <div><strong>Age:</strong> ${profile.age}</div>
+          <div><strong>Lives in:</strong> ${profile.location}</div>
+          <div><strong>Religion:</strong> ${profile.religion}</div>
+        </div>
+        <div class="profile-section">
+          <div><strong>Profession:</strong> ${profile.profession}</div>
+          <div><strong>Price/Night:</strong> ${profile.price} BDT</div>
+          <div><strong>Relation:</strong> ${profile.status}</div>
+        </div>
+      </div>
+      <div class="profile-right">
+        <button class="hire-button" onclick="showPopup('${profile.name}')">Hire</button>
+      </div>
+    </div>
+  `;
+}
+
+const container = document.querySelector('.profiles');
+profiles.forEach(p => container.innerHTML += createProfile(p));
+
+function showPopup(name) {
+  alert(`You selected to hire ${name} — Only allowed in hotel for 12 hours (night).\nPlease select your hire date.`);
+  const date = prompt("Enter hire date (YYYY-MM-DD):");
+  if (date) {
+    alert(`Confirming hire for ${name} on ${date}.\nEmail will be sent to: piachowdhury25@gmail.com or contact-0196583146`);
+  }
+}
+</script>
+
+  </div>
+</body>
+</html>

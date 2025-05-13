@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drinks - Hasna Food</title>
+  <style>
+    body {
+      background-image: url('https://media.istockphoto.com/id/861107394/vector/alcohol-cocktails-drinks-hand-drawn-vintage-style-collection-and-party-alcoholic-sweet.jpg?s=612x612&w=0&k=20&c=RioNFHvZbGHyz_pPnAcvQ2OrmZO0kNCuVFUn5fs0o1s=');
+      background-size: cover;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: rgba(255,255,255,0.8);
+      padding: 10px 20px;
+    }
+    .cart-btn {
+      background-color: red;
+      color: white;
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .items-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      padding: 20px;
+    }
+    .item-box {
+      background-color: white;
+      width: 300px;
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    .item-box img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .save-btn {
+      margin-top: 10px;
+      background-color: orange;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+    }
+    #cart-modal, #payment-modal {
+      display: none;
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      box-shadow: 0 0 20px black;
+      z-index: 1000;
+    }
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Hasna Food - Drinks Menu</h1>
+    <button class="cart-btn" onclick="showCart()">View Cart</button>
+  </header>
+
+  <div class="items-container" id="itemsContainer"></div>
+
+  <div class="overlay" id="overlay"></div>
+
+  <!-- Cart Modal -->
+  <div id="cart-modal">
+    <h2>Your Cart</h2>
+    <div id="cartItems"></div>
+    <p id="totalPrice"></p>
+    <button onclick="openPayment()">Confirm Order</button>
+    <button onclick="closeCart()">Close</button>
+  </div>
+
+  <!-- Payment Modal -->
+  <div id="payment-modal">
+    <h2>Choose Payment Option</h2>
+    <button onclick="finishOrder('Cash on Delivery')">1. Cash on Delivery</button><br><br>
+    <button onclick="showPaymentNumber('Bkash/Nagad')">2. Bkash/Nagad</button><br><br>
+    <button onclick="showPaymentNumber('Card')">3. Card Payment</button><br><br>
+    <div id="paymentNumber"></div>
+    <br>
+    <button onclick="confirmFinalOrder()">Confirm</button>
+    <button onclick="closePayment()">Cancel</button>
+  </div>
+
+  <script>
+    const items = 
+    [
+      { name: 'Mojo pet', price: 40, weight: '500ml', img: 'https://i.chaldn.com/_mpimage/mojo-pet-500-ml?src=https%3A%2F%2Feggyolk.chaldal.com%2Fapi%2FPicture%2FRaw%3FpictureId%3D130802&q=best&v=1' },
+      { name: 'Mojo mini', price: 20, weight: '250ml', img: 'https://chaldn.com/_mpimage/mojo-pet-250-ml?src=https%3A%2F%2Feggyolk.chaldal.com%2Fapi%2FPicture%2FRaw%3FpictureId%3D161183&q=best&v=1&m=400&webp=1' },
+      { name: 'Mojo Family', price: 110, weight: '2 Ltr', img: 'https://media.e-valy.com/cms/products/images/ccd24f76-9def-4a47-99d4-5cc98dd2fae3' },
+      { name: 'Speed', price: 30, weight: '250ml', img: 'https://d2t8nl1y0ie1km.cloudfront.net/images/thumbs/65fa9386115075f231ec4aca_Speed-250-ml-Pet_1.webp' },
+      { name: 'Clemon', price: 25, weight: '250ml', img: 'https://images.deliveryhero.io/image/darkstores/nv-global-catalog/bd/2164009a-43e3-4c83-867a-710ebdce9a1c.jpg?height=480' },
+      { name: 'Speed Can', price: 50, weight: '250ml', img: 'https://d2t8nl1y0ie1km.cloudfront.net/images/thumbs/65fa9385115075f231ec4ac6_Speed-250ml-Can_1.webp' },
+      { name: 'Jeera Pani', price: 25, weight: '250ml', img: 'https://i.chaldn.com/_mpimage/rc-jeera-pani-250-ml?src=https%3A%2F%2Feggyolk.chaldal.com%2Fapi%2FPicture%2FRaw%3FpictureId%3D141966&q=best&v=1' },
+      { name: 'RC Q Lemon', price: 25, weight: '250ml', img: 'https://dokanpat.com.bd/wp-content/uploads/2024/08/rc-q-lemon-250ml.jpg' },
+      { name: 'SMC Plus Lemon', price: 40, weight: '250ml', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpdrft8oFwEulYYQb1bWn-AxRGeuDuw8qbYw&s' },
+      { name: 'SMC Plus Orange', price: 40, weight: '250ml', img: 'https://img.drz.lazcdn.com/static/bd/p/987dd6621b675004ed8f1d51bc6ff221.jpg_720x720q80.jpg' },
+      { name: 'Blubana Sports Lichi', price: 60, weight: '500ml', img: 'https://i.chaldn.com/_mpimage/bruvana-sports-electrolyte-beverage-litchi-flavor-500-ml?src=https%3A%2F%2Feggyolk.chaldal.com%2Fapi%2FPicture%2FRaw%3FpictureId%3D132996&q=best&v=1' },
+      { name: 'Blubana Sprots Lemon', price: 60, weight: '500ml', img: 'https://www.deshigreetings.com/public/uploads/all/XdlJgyNEvN9OB4ZomH7xazGGPE6YlXBjCkKQovGr.jpg' },
+      { name: 'Lemu', price: 25, weight: '250ml', img: 'https://images.deliveryhero.io/image/darkstores-bd/food/184716000391.jpg?height=480' },
+      { name: 'Fresh Lichi', price: 30, weight: '250ml', img: 'https://www.mgi.org/assets/images/sku/lyche1.jpg' },
+      { name: 'Fresh Cola', price: 20, weight: '250ml', img: 'https://www.mgi.org/assets/images/sku/Fresh-Cola-500ml.jpg' },
+      { name: 'Fresh Up', price: 25, weight: '250ml', img: 'https://www.mgi.org/assets/images/sku/freshup1.png' },
+      { name: 'Fresh Majanda', price: 25, weight: '250ml', img: 'https://www.mgi.org/assets/images/sku/majanda1.jpg' },
+      { name: 'Fresh Gogle', price: 25, weight: '250ml', img: 'https://www.mgi.org/assets/images/sku/glori1.jpg' },
+      { name: 'Fresh Water', price: 20, weight: '500ml', img: 'https://d2t8nl1y0ie1km.cloudfront.net/images/thumbs/6665244fa44f60e9a9a63006_Fresh-Natural-Drinking-Water-1L_1.webp' },
+      { name: 'Fresh Water', price: 40, weight: '1.5L', img: 'https://images.deliveryhero.io/image/darkstores-bd/food/1552003.jpg?height=480' },
+      { name: 'Fresh Water', price: 80, weight: '2.15L', img: 'https://www.mgi.org/assets/images/sku/super-fresh-drinking-water-2-liter-bottle.jpg' },
+      { name: 'RED BUL Gold', price: 250, weight: '250ml', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzMD-bd7i5wLDv66yfv5Xt95AwDXh51knXvg&s' },
+      { name: 'RED BULL', price: 325, weight: '250ml', img: 'https://chococraving.com/wp-content/uploads/2025/02/Red-Bull-Energy-Drink-250-mL.png' },
+      { name: 'Labang', price: 75, weight: '250ml', img: 'https://i.chaldn.com/_mpimage/aarong-dairy-laban-500-ml?src=https%3A%2F%2Feggyolk.chaldal.com%2Fapi%2FPicture%2FRaw%3FpictureId%3D74142&q=best&v=1&m=400' },
+      { name: 'Farm Fresh Chocolate', price: 40, weight: '250ml', img: 'https://images.deliveryhero.io/image/nv/Bangladesh/Pandamart/BDFGTVWX.jpg?height=480' },
+      { name: 'Arang Lacchi', price: 40, weight: '200ml', img: 'https://images.deliveryhero.io/image/product-information-management/67c979e54c622a8a12a6fe62.jpg?height=480' },
+      { name: 'Arang Matha', price: 35, weight: '200ml', img: 'https://aamaderbazar.com/wp-content/uploads/2024/05/aarong-dairy-matha-200-ml-300x300.jpg' },
+      { name: 'Mango Milk', price: 90, weight: '1L', img: 'https://newsite.shopifull.com/wp-content/uploads/2021/01/Pokka-Mango-Milk-1ltr.jpg' },
+      { name: 'Arong Mocha Milk Drink', price: 40, weight: '250ml', img: 'https://aamaderbazar.com/wp-content/uploads/2024/05/ezgif-5-c19547cbb1-e1715411349186.jpg' },
+      { name: 'Pran Lacchi', price: 35, weight: '200ml', img: 'https://production-jachai-service.s3-ap-southeast-1.amazonaws.com/static_image/2023-05-18T12:19:25.959_Pran-Lassi-Milk-Drink-(200-ml).jpg' },
+      { name: 'Pran Frooto', price: 25, weight: '250ml', img: 'https://www.pranfoods.net/sites/default/files/frooto_juice_250ml.jpg' },
+      { name: 'Pran Frooto', price: 90, weight: '1L', img: 'https://d2t8nl1y0ie1km.cloudfront.net/images/thumbs/65fa938f115075f231ec4b42_Pran-Frooto-Mango-Juice-1000ml_1_200.webp' },
+      { name: 'Frutika', price: 90, weight: '1L', img: 'https://i.chaldn.com/_mpimage/frutika-mango-juice-1-ltr?src=https%3A%2F%2Feggyolk.chaldal.com%2Fapi%2FPicture%2FRaw%3FpictureId%3D97206&q=best&v=1' },
+      { name: 'Frutika', price: 20, weight: '200ml', img: 'https://nohakbazar.com/wp-content/uploads/2022/11/frutika-orang.jpg' },
+      { name: 'Frutika Red Grap', price: 30, weight: '200ml', img: 'https://i.chaldn.com/_mpimage/frutika-red-grape-fruit-drink-250-ml?src=https%3A%2F%2Feggyolk.chaldal.com%2Fapi%2FPicture%2FRaw%3FpictureId%3D98580&q=best&v=1' },
+      { name: 'Braver', price: 150, weight: '250ml', img: 'https://dailyshoppingbd.com/images/detailed/5/0008580_braver-malt-drink-can-250-ml.jpeg' },
+      { name: 'Pran Drinko', price: 30, weight: '250ml', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUUevqUFM6rLh7cnpTYQ8S_eIM8tfUXLOlUBy8GMIhQwMMcQbFYJIe5VhHJG4dRn-losU&usqp=CAU' },
+      { name: 'Freez Milk', price: 120, weight: '250ml', img: 'https://worldfoodz.com/cdn/shop/files/Freez-Mix-Berry-Mix-Soda-275ml.jpg?v=1727197574' },
+      { name: 'Latina Mango', price: 190, weight: '1000ml', img: 'https://dokanpat.com.bd/wp-content/uploads/2023/11/latina-mango-juice-1000ml.jpg' },
+      { name: 'Latina Apple', price: 190, weight: '250ml', img: 'https://trustfamilyneeds.com/public/uploads/all/TKv1dGSaXpZPpw6tFiltI7rhalwlBpHlQo6MJ0RM.jpeg' },
+
+
+    ];
+
+    const cart = [];
+
+    function renderItems() {
+      const container = document.getElementById('itemsContainer');
+      items.forEach((item, i) => {
+        const box = document.createElement('div');
+        box.className = 'item-box';
+        box.innerHTML = `
+          <img src="${item.img}" alt="${item.name}">
+          <h3>${item.name}</h3>
+          <p>Price: ${item.price} BDT</p>
+          <p>Weight: ${item.weight}</p>
+          <label>Quantity: <input type='number' value='1' min='1' id='qty-${i}' style='width: 60px;'></label>
+          <br><button class="save-btn" onclick='addToCart(${i})'>Save to Cart</button>
+        `;
+        container.appendChild(box);
+      });
+    }
+
+    function addToCart(i) {
+      const qty = parseInt(document.getElementById(`qty-${i}`).value);
+      cart.push({ ...items[i], quantity: qty });
+      alert(items[i].name + ' added to cart');
+    }
+
+    function showCart() {
+      document.getElementById('overlay').style.display = 'block';
+      document.getElementById('cart-modal').style.display = 'block';
+      let content = '';
+      let total = 0;
+      cart.forEach(item => {
+        content += `<p>${item.name} x ${item.quantity} = ${item.price * item.quantity} BDT</p>`;
+        total += item.price * item.quantity;
+      });
+      document.getElementById('cartItems').innerHTML = content;
+      document.getElementById('totalPrice').innerText = 'Total: ' + total + ' BDT';
+    }
+
+    function closeCart() {
+      document.getElementById('overlay').style.display = 'none';
+      document.getElementById('cart-modal').style.display = 'none';
+    }
+
+    function openPayment() {
+      document.getElementById('cart-modal').style.display = 'none';
+      document.getElementById('payment-modal').style.display = 'block';
+    }
+
+    function closePayment() {
+      document.getElementById('payment-modal').style.display = 'none';
+      document.getElementById('overlay').style.display = 'none';
+    }
+
+    function showPaymentNumber(method) {
+      document.getElementById('paymentNumber').innerText = `Send to: 017XXXXXXXX (${method})`;
+    }
+
+    function confirmFinalOrder() {
+      alert("Order confirmed! Thanks to cooperate us");
+      closePayment();
+    }
+
+    function finishOrder(method) {
+      alert("Payment method selected: " + method);
+      confirmFinalOrder();
+    }
+
+    renderItems();
+  </script>
+</body>
+</html>
